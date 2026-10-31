@@ -1,3 +1,4 @@
+Pour le moment, modifie uniquement les fichiers Test et PyGymDatabase.py
 Ila knti awl mra atkhdm b GitHub:
 
 Au quotidien, après chaque modification
