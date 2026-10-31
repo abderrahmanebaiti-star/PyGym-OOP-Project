@@ -2,10 +2,10 @@ from PyGymDatabase import *
 from tkinter import *
 from tkinter.messagebox import *
 
-DB_NAME = "BaseDeDonne.db"
+db_name = "BaseDeDonne.db"
 
 
-OFFRES = [
+offers = [
     ("Basic", 9.99, "$", "machines"),
     ("Standard", 14.99, "$", "machines + pool"),
     ("Premium", 19.99, "$", "toutes options"),
@@ -14,7 +14,7 @@ OFFRES = [
 
 def subscription_status(ID_member):
     """Renvoie None (introuvable), True (abonné) ou False (non abonné)."""
-    PyGymDatabase = connect(DB_NAME)
+    PyGymDatabase = connect(db_name)
     try:
         cursor = PyGymDatabase.cursor()
         cursor.execute(
@@ -61,7 +61,7 @@ class GymApp:
         Label(self.frame_offers, text="Nos offres d'abonnement :",
               font=("Arial", 12, "bold")).pack(anchor="w", pady=(0, 5))
 
-        for nom, prix, devise, description in OFFRES:
+        for nom, prix, devise, description in offers:
             Label(self.frame_offers,
                   text=f"• {nom} : {prix}{devise} /mois ({description})",
                   font=("Arial", 11)).pack(anchor="w")
@@ -76,8 +76,8 @@ class GymApp:
 
         try:
             status = subscription_status(id_member)
-        except Error as e:
-            showerror("Erreur base de données", str(e))
+        except Error:
+            showerror("Erreur base de données", str(Error))
             return
 
         if status is None:
