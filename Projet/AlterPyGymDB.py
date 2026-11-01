@@ -1,7 +1,4 @@
-# import os
 from sqlite3 import connect
-
-# os.rename('BaseDeDonne.db', 'PyGymDB.db')
 
 db = connect('BaseDeDonne.db')
 try:
@@ -14,3 +11,4 @@ finally:
 # deleted column id_abo, actif from abonnement
 # added constraints to tables (primary-foreign to ID_member)
 # changed "Abonnement" to "GymSubs"
+# changed database name to "PyGymDB"
