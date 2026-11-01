@@ -1,14 +1,15 @@
 from tkinter import *
 from tkinter.messagebox import *
-from PyGymDatabase import *
+from PyGymDatabase import get_password, add_member, close
 
 label_font = "Georgia"
 yellow = "#FFD43B"
 dark_blue = "#306998"
 
 class Identification:
-    def __init__(self, window):
+    def __init__(self, window, next_interface):
         self.window = window
+        self.on_success = next_interface
         self.username = StringVar()
         self.password = StringVar()
         self.all_input = Frame(window)
@@ -42,55 +43,58 @@ class Identification:
 
 
 class LogIn(Identification):
-    def __init__(self, window):
-        self.window = window
-        super().__init__(window)
+    def __init__(self, window, after_ID):
+        super().__init__(window, after_ID)
         self.id_input("Log In", self.login, button_color=yellow, font_color=dark_blue)
 
     def login(self):
-        nom = self.username.get()
-        input_password = get_password(nom)
+        input_username = self.username.get()
+        input_password = get_password(input_username)
         if input_password is not None:
             if input_password == self.password.get():
                 showinfo(message="Logged in successfully")
                 self.endID()
-                Label(self.window, text="INTERFACE LI MORAHA", font=("TkDefaultFont", 20)).pack()
-                pass
+                self.on_success(self.username.get())
             else:
                 try_again = askretrycancel(title="Error", message="Incorrect password. Try Again?")
                 if try_again:
                     self.password.set('')
                 else:
                     self.window.destroy()
+                    close()
         else:
             try_signup = askyesnocancel(title="Warning", message="This account does not exist. Sign up instead?")
             if try_signup is None:
                 self.window.destroy()
+                close()
             elif try_signup:
                 self.all_input.destroy()
-                SignUp(self.window)
+                SignUp(self.window, self.on_success)
             else:
                 self.username.set('')
                 self.password.set('')
 
 
 class SignUp(Identification):
-    def __init__(self, window):
-        self.window = window
-        super().__init__(window)
+    def __init__(self, window, after_ID):
+        super().__init__(window, after_ID)
         self.id_input("Sign Up", self.signup, button_color=dark_blue, font_color=yellow)
 
     def signup(self):
+        if not self.username.get().strip() or not self.password.get():
+            showwarning("Empty field!", "Username and password are required.")
+            return
         if get_password(self.username.get()) is None:
             self.add_account()
-            Label(self.window, text="INTERFACE LI MORAHA", font=("TkDefaultFont", 20)).pack()
+            self.on_success(self.username.get())
         else:
-            login_instead = askyesnocancel(title="Warning",
+            login_instead = askyesnocancel(title="Existing account",
                                            message="Account with this name already exists. Log In instead?")
             if login_instead is None:
-                self.endID()
+                self.window.destroy()
             elif login_instead:
                 self.all_input.destroy()
-                LogIn(self.window)
+                LogIn(self.window, self.on_success)
             else:
                 self.username.set('')
+                self.password.set('')

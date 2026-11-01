@@ -1,92 +1,84 @@
-from PyGymDatabase import *
 from tkinter import *
-from tkinter.messagebox import *
+from PyGymDatabase import get_subscription, set_subscription, close
+from tkinter.messagebox import askyesno
 
-db_name = "BaseDeDonne.db"
+dark_blue = "#306998"
+blue = "#4B8BBE"
+yellow = "#FFD43B"
 
-
-all_offers = [
-    ("Basic", 9.99, "$", "machines"),
-    ("Standard", 14.99, "$", "machines + pool"),
-    ("Premium", 19.99, "$", "toutes options"),
-]
-
-
-def subscription_status(ID_member):
-    PyGymDatabase = connect(db_name)
-    try:
-        cursor = PyGymDatabase.cursor()
-        cursor.execute(
-            "SELECT type_offre FROM abonnement WHERE ID_member = ?",
-            (ID_member,),
-        )
-        offer = cursor.fetchone()
-    finally:
-        PyGymDatabase.close()
-
-    if offer is None:
-        return None
-    return offer[0]
+all_offers = {
+    "Basic": (9.99, "$", "machines"),
+    "Standard": (14.99, "$", "machines + pool"),
+    "Premium": (19.99, "$", "toutes options"),
+}
 
 
-class GymApp:
-    def __init__(self, window):
+class Subscription:
+    def __init__(self, window, ID_member):
         self.window = window
         window.title("Gym - Abonnement")
+        self.bg = window.cget("bg")
+        self.ID = ID_member
 
-        Label(window, text="Entrez l'ID du membre :",
-              font=("Arial", 12)).pack(pady=(20, 5))
+        self.frame_sub = Frame(window, bg=self.bg)
+        self.frame_sub.place(anchor=CENTER, relx=.5, rely=.5)
+        self.label_result = Label(self.frame_sub, text="", font=("Georgia", 12, "bold"), bg=self.bg)
+        self.label_result.pack(pady=5)
 
-        self.entry_id = Entry(window, font=("Arial", 12), justify="center")
-        self.entry_id.pack()
-        self.entry_id.focus()
-        self.entry_id.bind("<Return>", lambda event: self.verify())
-
-        Button(window, text="Vérifier", font=("Arial", 11),
-               command=self.verify).pack(pady=10)
-
-        self.label_resultat = Label(window, text="", font=("Arial", 12, "bold"))
-        self.label_resultat.pack(pady=5)
-
-        self.frame_offers = Frame(window)
+        self.frame_offers = Frame(self.frame_sub, bg=self.bg)
         self.frame_offers.pack(pady=10, padx=20, anchor="w")
 
-    def empty_offers(self):
-        for widget in self.frame_offers.winfo_children():
-            widget.destroy()
+        self.verify(ID_member)
 
-    def afficher_offres(self):
-        self.empty_offers()
-        Label(self.frame_offers, text="Nos offres d'abonnement :",
-              font=("Arial", 12, "bold")).pack(anchor="w", pady=(0, 5))
-
-        for nom, prix, devise, description in all_offers:
-            Label(self.frame_offers,
-                  text=f"• {nom} : {prix}{devise} /mois ({description})",
-                  font=("Arial", 11)).pack(anchor="w")
-
-    def verify(self):
-        id_member = self.entry_id.get().strip()
-        self.empty_offers()
-
-        if not id_member:
-            showwarning("Attention", "Veuillez entrer un ID.")
+    def buy_offer(self, offer):
+        if not askyesno("Confirmation", f"Are you sure you want to buy {offer} ?"):
             return
+        set_subscription(self.ID, offer)
+        self.frame_sub.destroy()
 
-        try:
-            status = subscription_status(id_member)
-        except Error:
-            showerror("Erreur base de données", str(Error))
-            return
+    def show_offers(self, sub_level=None):
+        current_price = all_offers[sub_level][0] if sub_level in all_offers else 0
+        Label(self.frame_offers, text="Our subscription offers :",
+              font=("Georgia", 12, "bold"), fg="red", bg=self.bg).grid(row=0, column=0)
+
+        offer_row = 1
+        for name, (price, devise, description) in all_offers.items():
+            offer_row +=1
+            offer_label = Label(self.frame_offers,text=f"• {name} ({description}): ",
+                                font=("Georgia", 11), bg=self.bg, fg="white")
+            offer_label.grid(row=offer_row, column=0, sticky=W)
+            if current_price < price:
+                choice = Button(self.frame_offers, text=f"{price} {devise}",
+                                command=lambda offer=name: self.buy_offer(offer),
+                                font=("Georgia", 12), bg=dark_blue, fg=yellow)
+            elif current_price == price:
+                choice = Label(self.frame_offers, text="Actif",
+                               font=("Georgia", 12), bg=self.bg, fg="green")
+            else:
+                choice = Label(self.frame_offers, text="", bg=self.bg)
+            choice.grid(row=offer_row, column=1, sticky=EW)
+        Button(self.frame_offers, text="Cancel",
+               font=("Georgia", 9), command=self.frame_sub.destroy,
+               bg=blue, fg="black").grid(row=offer_row+1, column=2, sticky=W)
+
+    def verify(self, ID_member):
+        status = get_subscription(ID_member)
 
         if status is None:
-            self.label_resultat.config(text="Non abonné.", fg="red")
-            self.afficher_offres()
+            self.label_result.config(text="No subscription.", fg="red")
+            self.show_offers()
         else:
-            self.label_resultat.config(
-                text=f"Abonnement: {status}.", fg="green")
+            self.label_result.config(text=f"Subscription: {status}.", fg="green")
+            self.show_offers(status)
 
+if __name__ == '__main__':
+    try:
+        window = Tk()
+        window.title("PyGym")
+        window.geometry("360x320")
+        window.configure(bg="black")
 
-window = Tk()
-GymApp(window)
-window.mainloop()
+        Subscription(window, "admin")
+        window.mainloop()
+    finally:
+        close()
