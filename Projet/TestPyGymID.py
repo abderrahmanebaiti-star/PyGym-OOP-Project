@@ -17,14 +17,14 @@ class Identification:
         self.all_input.configure(bg=self.window.cget("bg"))
         self.all_input.place(relx=.5, rely=.5, anchor=CENTER)
 
-        username_label = Label(self.all_input, text="Username: ", bg=self.window.cget("bg"), font=label_font)
+        username_label = Label(self.all_input, text="Username: ", bg=self.window.cget("bg"), fg="white", font=label_font)
         username_label.grid(row=0, column=0)
 
         username_entry = Entry(self.all_input, textvariable=self.username)
         username_entry.focus_set()
         username_entry.grid(row=0, column=1)
 
-        password_label = Label(self.all_input, text="Password: ", bg=self.window.cget("bg"), font=label_font)
+        password_label = Label(self.all_input, text="Password: ", bg=self.window.cget("bg"), fg="white", font=label_font)
         password_label.grid(row=1, column=0)
 
         password_entry = Entry(self.all_input, textvariable=self.password, show="\u25cf")
@@ -46,16 +46,16 @@ class LogIn(Identification):
         self.window = window
         super().__init__(window)
         self.id_input("Log In", self.login, button_color=yellow, font_color=dark_blue)
-        window.configure(bg=dark_blue)
 
     def login(self):
         nom = self.username.get()
-        motdepasse = get_password(nom)
-        if motdepasse is not None:
-            if motdepasse == self.password.get():
+        input_password = get_password(nom)
+        if input_password is not None:
+            if input_password == self.password.get():
                 showinfo(message="Logged in successfully")
                 self.endID()
                 Label(self.window, text="INTERFACE LI MORAHA", font=("TkDefaultFont", 20)).pack()
+                pass
             else:
                 try_again = askretrycancel(title="Error", message="Incorrect password. Try Again?")
                 if try_again:
@@ -79,7 +79,6 @@ class SignUp(Identification):
         self.window = window
         super().__init__(window)
         self.id_input("Sign Up", self.signup, button_color=dark_blue, font_color=yellow)
-        window.configure(bg=yellow)
 
     def signup(self):
         if get_password(self.username.get()) is None:

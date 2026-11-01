@@ -2,7 +2,6 @@ from TestPyGymStart import *
 from TestPyGymID import *
 
 dark_blue = "#306998"
-white = "#FFFFFF"
 blue = "#4B8BBE"
 yellow = "#FFD43B"
 
