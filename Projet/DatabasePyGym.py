@@ -1,5 +1,9 @@
 from sqlite3 import connect
 from datetime import date
+from hashlib import sha256
+
+def hash_password(password):
+    return sha256(password.encode()).hexdigest()
 
 DB_NAME = 'PyGymDB.db'
 
@@ -61,33 +65,46 @@ def set_subscription(username, offer):
 
 
 # Partie Sessions:
-activities = ["Musculation", "Cardio", "Yoga"]
+# Partie Sessions:
+# activité -> offre minimale requise
+activities = {
+    "Musculation": "Basic",     # machines
+    "Cardio": "Basic",          # machines
+    "Swimming": "Standard",     # machines + pool
+    "Aquagym": "Standard",      # machines + pool
+    "Yoga": "Premium",          # toutes options
+    "CrossFit": "Premium",
+    "Box": "Premium",
+}
+
+offer_level = {"Basic": 1, "Standard": 2, "Premium": 3}
+
+
+def allowed_activities(username):
+    offer = get_subscription(username)
+    if offer is None:
+        return []
+    return [name for name, required in activities.items()
+            if offer_level[offer] >= offer_level[required]]
 
 
 def is_subscribed(username):
-    # abonné = il a une ligne dans GymSubs
     return get_subscription(username) is not None
 
 
 def add_session(username, activity):
-    # enregistre la séance seulement si le membre est abonné
-    if is_subscribed(username):
-        PyGymDB.execute("INSERT INTO Sessions(ID_member, date_time, activity) VALUES (?, datetime('now','localtime'), ?)",
+    # enregistre la séance seulement si l'offre du membre couvre cette activité
+    if activity in allowed_activities(username):
+        PyGymDB.execute("INSERT INTO Sessions(ID_member, date_time, activity) "
+                        "VALUES (?, datetime('now','localtime'), ?)",
                         (username, activity))
         PyGymDB.commit()
         return True
     return False
 
-
 def get_sessions(username):
     return PyGymDB.execute("SELECT date_time,activity FROM Sessions WHERE ID_member = ? ORDER BY id DESC",
                            (username,)).fetchall()
-
-
-# --- Seulement pour TESTER (donne une offre à un membre) ---
-def set_offer(username, offer):
-    set_subscription(username, offer)
-
 
 # Close
 def close():
@@ -95,4 +112,5 @@ def close():
 
 
 if __name__ == '__main__':
+    print("Ce fichier n'est pas un programme.")
     close()

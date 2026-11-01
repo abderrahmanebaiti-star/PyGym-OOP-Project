@@ -1,6 +1,6 @@
 from tkinter import *
 from tkinter.messagebox import *
-from PyGymDatabase import get_password, add_member, close
+from DatabasePyGym import hash_password, get_password, add_member, close
 
 label_font = "Georgia"
 yellow = "#FFD43B"
@@ -35,7 +35,7 @@ class Identification:
         identification_button.grid(row=2, column=1, padx=10)
 
     def add_account(self):
-        add_member(self.username.get(), self.password.get())
+        add_member(self.username.get(), hash_password(self.password.get()))
         showinfo(message="Account successfully created")
         self.endID()
     def endID(self):
@@ -48,13 +48,13 @@ class LogIn(Identification):
         self.id_input("Log In", self.login, button_color=yellow, font_color=dark_blue)
 
     def login(self):
-        input_username = self.username.get()
-        input_password = get_password(input_username)
-        if input_password is not None:
-            if input_password == self.password.get():
+        input_username = self.username.get().strip()
+        correct_password = get_password(input_username)
+        if correct_password is not None:
+            if correct_password == hash_password(self.password.get()):
                 showinfo(message="Logged in successfully")
                 self.endID()
-                self.on_success(self.username.get())
+                self.on_success(input_username)
             else:
                 try_again = askretrycancel(title="Error", message="Incorrect password. Try Again?")
                 if try_again:
@@ -92,6 +92,7 @@ class SignUp(Identification):
                                            message="Account with this name already exists. Log In instead?")
             if login_instead is None:
                 self.window.destroy()
+                close()
             elif login_instead:
                 self.all_input.destroy()
                 LogIn(self.window, self.on_success)
