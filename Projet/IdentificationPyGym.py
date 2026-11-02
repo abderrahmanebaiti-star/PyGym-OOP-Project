@@ -1,8 +1,10 @@
 from tkinter            import *
 from tkinter.messagebox import *
 from DatabasePyGym      import hash_password, get_password, add_member, close
-from MainPyGym import yellow, dark_blue
 
+dark_blue = "#3776AB"
+blue = "#4B8BBE"
+yellow = "#FFD43B"
 label_font = "Georgia"
 
 class Identification:

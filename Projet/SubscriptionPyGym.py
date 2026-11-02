@@ -1,8 +1,10 @@
 from tkinter import *
 from DatabasePyGym import get_subscription, add_subscription, close
 from tkinter.messagebox import askyesno
-from MainPyGym import yellow, dark_blue
 
+dark_blue = "#3776AB"
+blue = "#4B8BBE"
+yellow = "#FFD43B"
 font = "Georgia"
 
 all_offers = {

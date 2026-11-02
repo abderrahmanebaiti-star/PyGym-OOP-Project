@@ -117,7 +117,7 @@ def close():
 
 if __name__ == '__main__':
     try:
-        add_member(      "test", "test")
+        add_member(      "test", hash_password("test"))
         add_subscription("test", "Standard")
         add_session(     "test", "Swimming")
     finally:

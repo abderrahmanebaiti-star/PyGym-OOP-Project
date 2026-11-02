@@ -1,5 +1,8 @@
 from tkinter import *
-from MainPyGym import yellow, blue
+
+dark_blue = "#3776AB"
+blue = "#4B8BBE"
+yellow = "#FFD43B"
 
 
 title_font = "Georgia"

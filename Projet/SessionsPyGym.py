@@ -2,8 +2,10 @@ from tkinter import *
 from tkinter.ttk import Combobox, Treeview
 from tkinter.messagebox import showinfo, showerror
 from DatabasePyGym import allowed_activities, add_session, get_sessions
-from MainPyGym import yellow, dark_blue
 
+dark_blue = "#3776AB"
+blue = "#4B8BBE"
+yellow = "#FFD43B"
 label_font = "Georgia"
 
 def sessions_page(window, username, back=None):
