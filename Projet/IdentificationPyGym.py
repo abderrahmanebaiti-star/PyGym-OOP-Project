@@ -1,6 +1,6 @@
-from tkinter import *
+from tkinter            import *
 from tkinter.messagebox import *
-from DatabasePyGym import hash_password, get_password, add_member, close
+from DatabasePyGym      import hash_password, get_password, add_member, close
 
 label_font = "Georgia"
 yellow = "#FFD43B"
@@ -103,3 +103,13 @@ class SignUp(Identification):
             else:
                 self.username.set('')
                 self.password.set('')
+
+if __name__ == "__main__":
+    from MainPyGym import main_window
+    # On teste Log In
+    LogIn(main_window, after_ID=lambda u: Label(main_window,
+                       text=f"Username: {u}", bg=main_window.cget("bg"),
+                       font=("Georgia", 16)).pack())
+    # E.g: Username: test
+    #      Password: test
+    main_window.mainloop()

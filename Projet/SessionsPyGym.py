@@ -9,18 +9,18 @@ yellow = "#FFD43B"
 
 def sessions_page(window, username, back=None):
     window.title("PyGym - Sessions")
-    bg = window.cget("bg")
-    frame = Frame(window, bg=bg)
+    background = window.cget("bg")
+    frame = Frame(window, bg=background)
     frame.pack(fill=BOTH, expand=True)
 
 
-    Label(frame, text="My sessions", font=("Georgia", 22), bg=bg, fg=yellow).pack(pady=(20, 5))
-    Label(frame, text="Member : " + username, bg=bg, fg="white").pack()
+    Label(frame, text="My sessions", font=("Georgia", 22), bg=background, fg=yellow).pack(pady=(20, 5))
+    Label(frame, text="Member : " + username, bg=background, fg="white").pack()
 
 
-    top = Frame(frame, bg=bg)
+    top = Frame(frame, bg=background)
     top.pack(pady=15)
-    Label(top, text="Activity :", bg=bg, fg=yellow).pack(side=LEFT, padx=5)
+    Label(top, text="Activity :", bg=background, fg=yellow).pack(side=LEFT, padx=5)
     allowed = allowed_activities(username)
     activity = Combobox(top, values=allowed, state="readonly", width=15)
     activity.pack(side=LEFT, padx=5)
@@ -39,10 +39,12 @@ def sessions_page(window, username, back=None):
 
     def book():
         if add_session(username, activity.get()):
-            showinfo("Session", "Session booked!")
+            showinfo("Session",
+                     "Session booked!")
             fill_table()
         else:
-            showerror("Refused", "You need a higher subscription to book a session.")
+            showerror("Refused",
+                      "You need a higher subscription to book this session.")
 
     def go_back():
         frame.destroy()
@@ -59,6 +61,6 @@ def sessions_page(window, username, back=None):
 if __name__ == '__main__':
     window = Tk()
     window.title("PyGym")
-    window.configure(bg="black")
-    sessions_page(window, "test")
+    window.configure(bg="#4B8BBE")
+    sessions_page(window, "admin")
     window.mainloop()

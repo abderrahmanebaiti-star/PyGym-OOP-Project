@@ -1,10 +1,13 @@
 from tkinter import *
-def start(window, log_in, sign_up):
-    dark_blue = "#306998"
-    yellow = "#FFD43B"
 
-    title_font  = "Georgia"
-    button_font = "Georgia"
+blue      = "#4B8BBE"
+yellow    = "#FFD43B"
+dark_blue = "#306998"
+
+title_font = "Georgia"
+button_font = "Georgia"
+
+def start(window, log_in, sign_up):
     StartUpFrame = Frame(window)
     StartUpFrame.pack(pady=(0, 15))
     StartUpFrame.configure(bg=window.cget("bg"))
@@ -21,9 +24,21 @@ def start(window, log_in, sign_up):
 
 
     log_in_button = Button(StartUpFrame, text="Log in", command=call_log_in,
-                          bg=dark_blue, fg=yellow, font=(button_font, 12), width=20, height=2)
+                          bg=blue, fg=yellow, font=(button_font, 12), width=20, height=2)
     log_in_button.pack(pady=(0, 15))
 
     sign_up_button = Button(StartUpFrame, text="Sign up", command=call_sign_up,
-                           bg=yellow, fg=dark_blue, font=(button_font, 12), width=20, height=2)
+                           bg=yellow, fg=blue, font=(button_font, 12), width=20, height=2)
     sign_up_button.pack(pady=(0, 15))
+
+if __name__ == "__main__":
+    from MainPyGym import main_window
+    start(main_window,
+          lambda w : Label(w, text="Logging in",
+                              bg=main_window.cget("bg"),
+                                        font=(button_font, 16)).pack(),
+          lambda w : Label(w, text="Signing up",
+                              bg=main_window.cget("bg"),
+                              font=(button_font, 16)).pack())
+
+    main_window.mainloop()
