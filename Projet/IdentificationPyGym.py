@@ -7,10 +7,10 @@ yellow = "#FFD43B"
 dark_blue = "#306998"
 
 class Identification:
-    def __init__(self, window, next_interface):
+    def __init__(self, window, for_next):
         self.window = window
         self.bg = self.window.cget("bg")
-        self.on_success = next_interface
+        self.for_next = for_next
         self.username = StringVar()
         self.password = StringVar()
         self.all_input = Frame(window)
@@ -55,7 +55,7 @@ class LogIn(Identification):
             if correct_password == hash_password(self.password.get()):
                 showinfo(message="Logged in successfully.")
                 self.endID()
-                self.on_success(input_username)
+                self.for_next(input_username)
             else:
                 try_again = askretrycancel(title="Error",
                                            message="Incorrect password. Try Again?")
@@ -72,7 +72,7 @@ class LogIn(Identification):
                 close()
             elif try_signup:
                 self.all_input.destroy()
-                SignUp(self.window, self.on_success)
+                SignUp(self.window, self.for_next)
             else:
                 self.username.set('')
                 self.password.set('')
@@ -90,7 +90,7 @@ class SignUp(Identification):
             return
         if get_password(self.username.get()) is None:
             self.add_account()
-            self.on_success(self.username.get())
+            self.for_next(self.username.get())
         else:
             login_instead = askyesnocancel(title="Existing account",
                                            message="Account with this name already exists. Log In instead?")
@@ -99,7 +99,7 @@ class SignUp(Identification):
                 close()
             elif login_instead:
                 self.all_input.destroy()
-                LogIn(self.window, self.on_success)
+                LogIn(self.window, self.for_next)
             else:
                 self.username.set('')
                 self.password.set('')

@@ -59,8 +59,7 @@ def sessions_page(window, username, back=None):
 
 
 if __name__ == '__main__':
-    window = Tk()
-    window.title("PyGym")
-    window.configure(bg="#4B8BBE")
-    sessions_page(window, "admin")
-    window.mainloop()
+    from MainPyGym import main_window
+    # E.g.: Swimming
+    sessions_page(main_window, "test")
+    main_window.mainloop()

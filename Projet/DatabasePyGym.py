@@ -1,5 +1,4 @@
-from sqlite3 import connect, IntegrityError
-from datetime import date
+from sqlite3 import connect
 from hashlib import sha256
 
 def hash_password(password):
@@ -56,7 +55,6 @@ def get_subscription(username):
                           (username,)).fetchone()
     return row[0] if row else None
 
-
 def set_subscription(username, offer):
     if get_subscription(username) is None:
         PyGymDB.execute('INSERT INTO GymSubs (ID_member, type_offre) '
@@ -90,14 +88,10 @@ def allowed_activities(username):
     return [name for name, required in activities.items() if offer_level[offer] >= offer_level[required]]
 
 
-def is_subscribed(username):
-    return get_subscription(username) is not None
-
-
 def add_session(username, activity):
     if activity in allowed_activities(username):
         PyGymDB.execute('INSERT INTO Sessions(ID_member, date_time, activity) '
-                        'VALUES (?, datetime("now","localtime"), ?)',
+                        "VALUES (?, datetime('now','localtime'), ?)",
                         (username, activity))
         PyGymDB.commit()
         return True
@@ -117,9 +111,11 @@ def close():
 
 if __name__ == '__main__':
     try:
-        PyGymDB.execute("INSERT INTO GymMembers "
-                        "VALUES (?, ?, CURRENT_DATE)", ("test", hash_password("test")))
-    except IntegrityError:
-        print("Execute this code only ONCE for testing others!")
+        if get_password("test") is None:
+            add_member(      "test", "test")
+            set_subscription("test", "Standard")
+            add_session(     "test", "Swimming")
+        else:
+            print("Execute this code only once to enable testing!")
     finally:
         close()

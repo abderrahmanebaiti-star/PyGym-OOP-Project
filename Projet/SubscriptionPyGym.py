@@ -5,6 +5,7 @@ from tkinter.messagebox import askyesno
 dark_blue = "#306998"
 blue = "#4B8BBE"
 yellow = "#FFD43B"
+font = "Georgia"
 
 all_offers = {
     "Basic": (9.99, "$", "machines"),
@@ -14,9 +15,9 @@ all_offers = {
 
 
 class Subscription:
-    def __init__(self, window, ID_member, on_done):
+    def __init__(self, window, ID_member, for_next):
         self.window = window
-        self.on_done = on_done
+        self.for_next = for_next
         window.title("Gym - Subscription")
         self.bg = window.cget("bg")
         self.ID = ID_member
@@ -24,7 +25,7 @@ class Subscription:
         self.frame_sub = Frame(window, bg=self.bg)
         self.frame_sub.place(anchor=CENTER, relx=.5, rely=.5)
         self.label_result = Label(self.frame_sub, text="",
-                                  font=("Georgia", 12, "bold"), bg=self.bg)
+                                  font=(font, 12, "bold"), bg=self.bg)
         self.label_result.pack(pady=5)
 
         self.frame_offers = Frame(self.frame_sub, bg=self.bg)
@@ -34,38 +35,37 @@ class Subscription:
 
     def finish(self):
         self.frame_sub.destroy()
-        if self.on_done:
-            self.on_done(self.ID)
+        self.for_next(self.ID)
 
     def buy_offer(self, offer):
-        if not askyesno("Confirmation", f"Are you sure you want to buy {offer}?"):
-            return
-        set_subscription(self.ID, offer)
+        confirmed = askyesno("Confirmation", f"Are you sure you want to buy {offer}?")
+        if confirmed:
+            set_subscription(self.ID, offer)
         self.finish()
 
     def show_offers(self, sub_level=None):
         current_price = all_offers[sub_level][0] if sub_level in all_offers else 0
         Label(self.frame_offers, text="Our subscription offers :",
-              font=("Georgia", 12, "bold"), fg="red", bg=self.bg).grid(row=0, column=0)
+              font=(font, 12, "bold"), fg="red", bg=self.bg).grid(row=0, column=0)
 
         offer_row = 1
         for name, (price, currency, description) in all_offers.items():
             offer_row +=1
             offer_label = Label(self.frame_offers,text=f"• {name} ({description}): ",
-                                font=("Georgia", 11), bg=self.bg, fg="white")
+                                font=(font, 11), bg=self.bg, fg="white")
             offer_label.grid(row=offer_row, column=0, sticky=W)
             if current_price < price:
                 choice = Button(self.frame_offers, text=f"{price} {currency}",
                                 command=lambda offer=name: self.buy_offer(offer),
-                                font=("Georgia", 12), bg=dark_blue, fg=yellow)
+                                font=(font, 12), bg=dark_blue, fg=yellow)
             elif current_price == price:
                 choice = Label(self.frame_offers, text="Active",
-                               font=("Georgia", 12), bg=self.bg, fg="green")
+                               font=(font, 12), bg=self.bg, fg="green")
             else:
                 choice = Label(self.frame_offers, text="", bg=self.bg)
             choice.grid(row=offer_row, column=1, sticky=EW)
         Button(self.frame_offers, text="Cancel",
-               font=("Georgia", 9), command=self.finish,
+               font=(font, 9), command=self.finish,
                bg=blue, fg="black").grid(row=offer_row+1, column=2, sticky=W)
 
     def verify(self, ID_member):
@@ -85,7 +85,7 @@ if __name__ == '__main__':
         Subscription(main_window, "test",
                      lambda u: Label(main_window, text=f"Sessions de {u}",
                                      bg=main_window.cget("bg"),
-                                     font=("Georgia", 16)).pack())
+                                     font=(font, 16)).pack())
         main_window.mainloop()
     finally:
         close()
