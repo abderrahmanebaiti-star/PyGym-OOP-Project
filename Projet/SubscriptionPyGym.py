@@ -23,7 +23,8 @@ class Subscription:
 
         self.frame_sub = Frame(window, bg=self.bg)
         self.frame_sub.place(anchor=CENTER, relx=.5, rely=.5)
-        self.label_result = Label(self.frame_sub, text="", font=("Georgia", 12, "bold"), bg=self.bg)
+        self.label_result = Label(self.frame_sub, text="",
+                                  font=("Georgia", 12, "bold"), bg=self.bg)
         self.label_result.pack(pady=5)
 
         self.frame_offers = Frame(self.frame_sub, bg=self.bg)
@@ -79,12 +80,12 @@ class Subscription:
 
 if __name__ == '__main__':
     try:
-        window = Tk()
-        window.title("PyGym")
-        window.geometry("360x320")
-        window.configure(bg="black")
-
-        Subscription(window, "admin", None)
-        window.mainloop()
+        from MainPyGym import main_window
+        # E.g: Standard
+        Subscription(main_window, "test",
+                     lambda u: Label(main_window, text=f"Sessions de {u}",
+                                     bg=main_window.cget("bg"),
+                                     font=("Georgia", 16)).pack())
+        main_window.mainloop()
     finally:
         close()
