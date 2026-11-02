@@ -2,10 +2,9 @@ from tkinter import *
 from tkinter.ttk import Combobox, Treeview
 from tkinter.messagebox import showinfo, showerror
 from DatabasePyGym import allowed_activities, add_session, get_sessions
+from MainPyGym import yellow, dark_blue
 
-dark_blue = "#306998"
-yellow = "#FFD43B"
-
+label_font = "Georgia"
 
 def sessions_page(window, username, back=None):
     window.title("PyGym - Sessions")
@@ -14,7 +13,7 @@ def sessions_page(window, username, back=None):
     frame.pack(fill=BOTH, expand=True)
 
 
-    Label(frame, text="My sessions", font=("Georgia", 22), bg=background, fg=yellow).pack(pady=(20, 5))
+    Label(frame, text="My sessions", font=(label_font, 22), bg=background, fg=yellow).pack(pady=(20, 5))
     Label(frame, text="Member : " + username, bg=background, fg="white").pack()
 
 

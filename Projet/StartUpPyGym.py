@@ -1,15 +1,13 @@
 from tkinter import *
+from MainPyGym import yellow, blue
 
-blue      = "#4B8BBE"
-yellow    = "#FFD43B"
-dark_blue = "#306998"
 
 title_font = "Georgia"
 button_font = "Georgia"
 
 def start(window, log_in, sign_up):
     StartUpFrame = Frame(window)
-    StartUpFrame.pack(pady=(0, 15))
+    StartUpFrame.place(relx=.5, rely=.5, anchor=CENTER)
     StartUpFrame.configure(bg=window.cget("bg"))
 
     project_title = Label(StartUpFrame, text="PyGym", font=(title_font, 30),
