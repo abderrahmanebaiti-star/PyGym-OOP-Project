@@ -27,7 +27,7 @@ PyGymDB.execute('CREATE TABLE IF NOT EXISTS GymMembers ('
 # Initialisation Subscription
 PyGymDB.execute('CREATE TABLE IF NOT EXISTS GymSubs ('
                 'ID_member VARCHAR PRIMARY KEY,'
-                'type_offre VARCHAR,'
+                'offer_type VARCHAR,'
                 'Expiration_date DATE,'
                 'FOREIGN KEY (ID_member) REFERENCES GymMembers(ID_member))')
 # Initialisation Session
@@ -57,18 +57,18 @@ def add_member(username, password):
 
 # Partie Subscription:
 def get_subscription(username):
-    row = PyGymDB.execute("SELECT type_offre FROM GymSubs WHERE ID_member = ?",
+    row = PyGymDB.execute("SELECT offer_type FROM GymSubs WHERE ID_member = ?",
                           (username,)).fetchone()
     return row[0] if row else None
 
 def add_subscription(username, offer):
     if get_subscription(username) is None:
-        PyGymDB.execute('INSERT INTO GymSubs (ID_member, type_offre, Expiration_date) '
+        PyGymDB.execute('INSERT INTO GymSubs (ID_member, offer_type, Expiration_date) '
                         "VALUES (?, ?, date('now', 'localtime', ?))",
                         (username, offer, f"+{valid_time} days"))
     else:
         PyGymDB.execute('UPDATE GymSubs '
-                        "SET type_offre = ?, Expiration_date = date('now', 'localtime', ?) "
+                        "SET offer_type = ?, Expiration_date = date('now', 'localtime', ?) "
                         'WHERE ID_member = ?',
                         (offer, f"+{valid_time} days", username))
     PyGymDB.commit()
