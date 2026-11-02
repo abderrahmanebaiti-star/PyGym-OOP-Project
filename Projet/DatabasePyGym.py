@@ -1,15 +1,20 @@
-from sqlite3 import connect
+from sqlite3 import connect, IntegrityError
 from hashlib import sha256
 
 def hash_password(password):
     return sha256(password.encode()).hexdigest()
 
 DB_NAME = 'PyGymDB.db'
+valid_time = 30
 
 
 def get_connection():
     conn = connect(DB_NAME)
     conn.execute('PRAGMA foreign_keys = ON')
+    try:
+        conn.execute("DELETE FROM GymSubs WHERE CURRENT_DATE > Expiration_date")
+    except IntegrityError:
+        return conn
     return conn
 
 
@@ -23,6 +28,7 @@ PyGymDB.execute('CREATE TABLE IF NOT EXISTS GymMembers ('
 PyGymDB.execute('CREATE TABLE IF NOT EXISTS GymSubs ('
                 'ID_member VARCHAR PRIMARY KEY,'
                 'type_offre VARCHAR,'
+                'Expiration_date DATE,'
                 'FOREIGN KEY (ID_member) REFERENCES GymMembers(ID_member))')
 # Initialisation Session
 PyGymDB.execute('CREATE TABLE IF NOT EXISTS Sessions ('
@@ -44,7 +50,7 @@ def get_password(username):
 
 def add_member(username, password):
     PyGymDB.execute('INSERT INTO GymMembers(ID_member,password,date) '
-                    'Values (?, ?, CURRENT_DATE)',
+                    'VALUES (?, ?, CURRENT_DATE)',
                     (username, password))
     PyGymDB.commit()
 
@@ -55,16 +61,16 @@ def get_subscription(username):
                           (username,)).fetchone()
     return row[0] if row else None
 
-def set_subscription(username, offer):
+def add_subscription(username, offer):
     if get_subscription(username) is None:
-        PyGymDB.execute('INSERT INTO GymSubs (ID_member, type_offre) '
-                        'VALUES (?, ?)',
-                        (username, offer))
+        PyGymDB.execute('INSERT INTO GymSubs (ID_member, type_offre, Expiration_date) '
+                        "VALUES (?, ?, date('now', 'localtime', ?))",
+                        (username, offer, f"+{valid_time} days"))
     else:
         PyGymDB.execute('UPDATE GymSubs '
-                        'SET type_offre = ? '
+                        "SET type_offre = ?, Expiration_date = date('now', 'localtime', ?) "
                         'WHERE ID_member = ?',
-                        (offer, username))
+                        (offer, f"+{valid_time} days", username))
     PyGymDB.commit()
 
 
@@ -111,11 +117,9 @@ def close():
 
 if __name__ == '__main__':
     try:
-        if get_password("test") is None:
-            add_member(      "test", "test")
-            set_subscription("test", "Standard")
-            add_session(     "test", "Swimming")
-        else:
-            print("Execute this code only once to enable testing!")
+        add_member(      "test", "test")
+        add_subscription("test", "Standard")
+        add_session(     "test", "Swimming")
     finally:
+        print("Execute this code only once to enable testing!")
         close()

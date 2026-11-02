@@ -1,5 +1,5 @@
 from tkinter import *
-from DatabasePyGym import get_subscription, set_subscription, close
+from DatabasePyGym import get_subscription, add_subscription, close
 from tkinter.messagebox import askyesno
 
 dark_blue = "#306998"
@@ -40,7 +40,7 @@ class Subscription:
     def buy_offer(self, offer):
         confirmed = askyesno("Confirmation", f"Are you sure you want to buy {offer}?")
         if confirmed:
-            set_subscription(self.ID, offer)
+            add_subscription(self.ID, offer)
         self.finish()
 
     def show_offers(self, sub_level=None):
