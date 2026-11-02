@@ -10,7 +10,7 @@ yellow = "#FFD43B"
 main_window = Tk()
 main_window.title("PyGym")
 main_window.geometry("360x320")
-main_window.configure(bg="black")
+main_window.configure(bg=blue)
 
 def go_sessions(username):
     sessions_page(main_window, username, back=go_subscription)
