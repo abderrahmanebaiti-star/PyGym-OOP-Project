@@ -1,4 +1,4 @@
-Main: MainPyGy.py
+Main: MainPyGym.py
 
 SQL Commands: DatabasePyGym.py
 
