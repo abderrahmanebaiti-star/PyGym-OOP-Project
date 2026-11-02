@@ -1,10 +1,5 @@
-Pour le moment, modifie uniquement les fichiers Test et PyGymDatabase.py
-Ila knti awl mra atkhdm b GitHub:
+Main: MainPyGy.py
 
-Au quotidien, après chaque modification
+SQL Commands: DatabasePyGym.py
 
-Onglet Commit : coche les fichiers modifiés, écris un message, Commit.
-Git → Pull… pour récupérer le travail des autres.
-Git → Push… pour envoyer le tien.
-
-Fais le Pull (Update Project, Ctrl+T) avant le Push (Ctrl+Shift+K), pour éviter les conflits.
+Database Editing: DBModifier.py
