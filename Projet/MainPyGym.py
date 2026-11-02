@@ -3,7 +3,7 @@ from       SessionsPyGym import sessions_page
 from        StartUpPyGym import start
 from IdentificationPyGym import *
 
-dark_blue = "#306998"
+dark_blue = "#3776AB"
 blue = "#4B8BBE"
 yellow = "#FFD43B"
 
