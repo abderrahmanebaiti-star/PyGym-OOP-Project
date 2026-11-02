@@ -2,7 +2,6 @@ __pycache__/
 *.pyc
 .idea/
 .venv/
-*.db
 desktop.ini
 Thumbs.db
 .DS_Store
