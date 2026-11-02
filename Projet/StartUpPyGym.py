@@ -1,7 +1,6 @@
 from tkinter import *
 def start(window, log_in, sign_up):
     dark_blue = "#306998"
-    blue = "#4B8BBE"
     yellow = "#FFD43B"
 
     title_font  = "Georgia"
