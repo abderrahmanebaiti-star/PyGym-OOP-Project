@@ -65,27 +65,23 @@ def set_subscription(username, offer):
 
 
 # Partie Sessions:
-# Partie Sessions:
-# activité -> offre minimale requise
+offer_level = {"Basic": 1, "Standard": 2, "Premium": 3}
+
 activities = {
     "Musculation": "Basic",     # machines
     "Cardio": "Basic",          # machines
     "Swimming": "Standard",     # machines + pool
     "Aquagym": "Standard",      # machines + pool
-    "Yoga": "Premium",          # toutes options
+    "Yoga": "Premium",          # all options
     "CrossFit": "Premium",
     "Box": "Premium",
 }
-
-offer_level = {"Basic": 1, "Standard": 2, "Premium": 3}
-
 
 def allowed_activities(username):
     offer = get_subscription(username)
     if offer is None:
         return []
-    return [name for name, required in activities.items()
-            if offer_level[offer] >= offer_level[required]]
+    return [name for name, required in activities.items() if offer_level[offer] >= offer_level[required]]
 
 
 def is_subscribed(username):
@@ -93,7 +89,6 @@ def is_subscribed(username):
 
 
 def add_session(username, activity):
-    # enregistre la séance seulement si l'offre du membre couvre cette activité
     if activity in allowed_activities(username):
         PyGymDB.execute("INSERT INTO Sessions(ID_member, date_time, activity) "
                         "VALUES (?, datetime('now','localtime'), ?)",
@@ -103,7 +98,7 @@ def add_session(username, activity):
     return False
 
 def get_sessions(username):
-    return PyGymDB.execute("SELECT date_time,activity FROM Sessions WHERE ID_member = ? ORDER BY id DESC",
+    return PyGymDB.execute("SELECT date_time, activity FROM Sessions WHERE ID_member = ? ORDER BY id DESC",
                            (username,)).fetchall()
 
 # Close

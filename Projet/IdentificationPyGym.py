@@ -9,23 +9,24 @@ dark_blue = "#306998"
 class Identification:
     def __init__(self, window, next_interface):
         self.window = window
+        self.bg = self.window.cget("bg")
         self.on_success = next_interface
         self.username = StringVar()
         self.password = StringVar()
         self.all_input = Frame(window)
     def id_input(self, string, comm, button_color, font_color="Black"):
         self.window.title("PyGym - Identification")
-        self.all_input.configure(bg=self.window.cget("bg"))
+        self.all_input.configure(bg=self.bg)
         self.all_input.place(relx=.5, rely=.5, anchor=CENTER)
 
-        username_label = Label(self.all_input, text="Username: ", bg=self.window.cget("bg"), fg="white", font=label_font)
+        username_label = Label(self.all_input, text="Username: ", bg=self.bg, fg="white", font=label_font)
         username_label.grid(row=0, column=0)
 
         username_entry = Entry(self.all_input, textvariable=self.username)
         username_entry.focus_set()
         username_entry.grid(row=0, column=1)
 
-        password_label = Label(self.all_input, text="Password: ", bg=self.window.cget("bg"), fg="white", font=label_font)
+        password_label = Label(self.all_input, text="Password: ", bg=self.bg, fg="white", font=label_font)
         password_label.grid(row=1, column=0)
 
         password_entry = Entry(self.all_input, textvariable=self.password, show="\u25cf")
@@ -36,7 +37,7 @@ class Identification:
 
     def add_account(self):
         add_member(self.username.get(), hash_password(self.password.get()))
-        showinfo(message="Account successfully created")
+        showinfo(message="Account successfully created.")
         self.endID()
     def endID(self):
         self.all_input.destroy()
@@ -52,18 +53,20 @@ class LogIn(Identification):
         correct_password = get_password(input_username)
         if correct_password is not None:
             if correct_password == hash_password(self.password.get()):
-                showinfo(message="Logged in successfully")
+                showinfo(message="Logged in successfully.")
                 self.endID()
                 self.on_success(input_username)
             else:
-                try_again = askretrycancel(title="Error", message="Incorrect password. Try Again?")
+                try_again = askretrycancel(title="Error",
+                                           message="Incorrect password. Try Again?")
                 if try_again:
                     self.password.set('')
                 else:
                     self.window.destroy()
                     close()
         else:
-            try_signup = askyesnocancel(title="Warning", message="This account does not exist. Sign up instead?")
+            try_signup = askyesnocancel(title="Account not found",
+                                        message="This account does not exist. Sign up instead?")
             if try_signup is None:
                 self.window.destroy()
                 close()
@@ -82,7 +85,8 @@ class SignUp(Identification):
 
     def signup(self):
         if not self.username.get().strip() or not self.password.get():
-            showwarning("Empty field!", "Username and password are required.")
+            showwarning(title="Empty field!",
+                        message="Username and password are required.")
             return
         if get_password(self.username.get()) is None:
             self.add_account()
