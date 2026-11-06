@@ -1,4 +1,4 @@
-from sqlite3 import connect, IntegrityError
+from sqlite3 import connect, OperationalError
 from hashlib import sha256
 
 def hash_password(password):
@@ -13,7 +13,7 @@ def get_connection():
     conn.execute('PRAGMA foreign_keys = ON')
     try:
         conn.execute("DELETE FROM GymSubs WHERE CURRENT_DATE > Expiration_date")
-    except IntegrityError:
+    except OperationalError:
         return conn
     return conn
 
