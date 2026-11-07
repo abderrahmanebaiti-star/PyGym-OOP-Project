@@ -23,7 +23,6 @@ def start(window, log_in, sign_up):
     log_in_button = ctk.CTkButton(StartUpFrame, text="Log in", command=call_log_in,
                                   width=360, height=48, font=theme.BOLD,  **theme.PRIMARY)
     log_in_button.pack(pady=(0, 14))
-
     sign_up_button = ctk.CTkButton(StartUpFrame, text="Sign up", command=call_sign_up,
                                    width=360, height=48, font=theme.BOLD, **theme.OUTLINE)
     sign_up_button.pack()
