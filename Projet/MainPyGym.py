@@ -1,9 +1,10 @@
-from   SubscriptionPyGym import Subscription
-from       SessionsPyGym import sessions_page
-from        StartUpPyGym import start
-from IdentificationPyGym import *
-import customtkinter as ctk
-import ThemePyGym as theme
+from     SubscriptionPyGym import Subscription
+from         SessionsPyGym import sessions_page
+from          StartUpPyGym import start
+from   IdentificationPyGym import *
+import          ThemePyGym as theme
+import customtkinter       as ctk
+
 
 main_window = ctk.CTk()
 main_window.title("PyGym")
