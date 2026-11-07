@@ -75,9 +75,9 @@ def add_subscription(username, offer):
 
 
 # Partie Sessions:
-offer_level = {"Basic": 1,
+offer_level = {"Basic"   : 1,
                "Standard": 2,
-               "Premium": 3}
+               "Premium" : 3}
 
 activities = {
     "Musculation": 'Basic'   ,          # machines
