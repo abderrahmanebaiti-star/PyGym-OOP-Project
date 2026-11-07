@@ -1,20 +1,20 @@
-from tkinter import *
-from tkinter.ttk import Combobox, Treeview
-from tkinter.messagebox import showinfo, showerror
-from DatabasePyGym import allowed_activities, add_session, get_sessions
-import customtkinter as ctk
-import ThemePyGym as theme
+from         tkinter            import *
+from         tkinter.ttk        import Combobox, Treeview
+from         tkinter.messagebox import showinfo, showerror
+import customtkinter            as ctk
+from   DatabasePyGym import allowed_activities, add_session, get_sessions
+import    ThemePyGym as theme
 
 def sessions_page(window, username, back=None):
     window.title("PyGym - Sessions")
     background = window.cget("bg")
     frame = Frame(window, bg=background)
     frame.place(relx=.5, rely=.56, anchor=CENTER)
-    ctk.CTkLabel(frame, text="MY SESSIONS", font=theme.TITLE, text_color=theme.yellow).pack(anchor="w")
-    ctk.CTkLabel(frame, text="Member: " + username, font=theme.TEXT, text_color=theme.muted).pack(anchor="w")
+    ctk.CTkLabel(frame, text="MY SESSIONS"        , font=theme.TITLE, text_color=theme.yellow).pack(anchor="w")
+    ctk.CTkLabel(frame, text="Member: " + username, font=theme.TEXT , text_color=theme.muted).pack(anchor="w")
     top = ctk.CTkFrame(frame, **theme.CARD)
     top.pack(pady=16, fill=X)
-    ctk.CTkLabel(top, text="Activity", font=theme.BOLD, text_color=theme.text).pack(side=LEFT, padx=(20, 12), pady=16)
+    ctk.CTkLabel(top  , text="Activity"           , font=theme.BOLD , text_color=theme.text).pack(side=LEFT, padx=(20, 12), pady=16)
     allowed = allowed_activities(username)
     activity = Combobox(top, values=allowed, state="readonly", width=16, font=(theme.TEXT[0], 11))
     activity.pack(side=LEFT)
