@@ -75,16 +75,18 @@ def add_subscription(username, offer):
 
 
 # Partie Sessions:
-offer_level = {"Basic": 1, "Standard": 2, "Premium": 3}
+offer_level = {"Basic": 1,
+               "Standard": 2,
+               "Premium": 3}
 
 activities = {
-    "Musculation": 'Basic',     # machines
-    "Cardio": 'Basic',          # machines
-    "Swimming": 'Standard',     # machines + pool
-    "Aquagym": 'Standard',      # machines + pool
-    "Yoga": 'Premium',          # all options
-    "CrossFit": 'Premium',
-    "Box": 'Premium',
+    "Musculation": 'Basic'   ,          # machines
+    "Cardio"     : 'Basic'   ,          # machines
+    "Swimming"   : 'Standard',          # machines + pool
+    "Aquagym"    : 'Standard',          # machines + pool
+    "Yoga"       : 'Premium' ,          # all options
+    "CrossFit"   : 'Premium' ,
+    "Box"        : 'Premium' ,
 }
 
 def allowed_activities(username):
