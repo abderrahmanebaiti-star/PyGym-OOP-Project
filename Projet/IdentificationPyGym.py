@@ -1,8 +1,8 @@
-from tkinter            import *
-from tkinter.messagebox import *
-from DatabasePyGym      import hash_password, get_password, add_member, close
-import customtkinter as ctk
-import ThemePyGym as theme
+from         tkinter            import *
+from         tkinter.messagebox import *
+import customtkinter            as ctk
+from   DatabasePyGym import hash_password, get_password, add_member, close
+import    ThemePyGym as theme
 
 
 class Identification:
@@ -30,7 +30,7 @@ class Identification:
         password_label.grid(row=3, column=0, sticky=W, padx=32)
 
         password_entry = ctk.CTkEntry(self.all_input, textvariable=self.password, show="●", font=theme.TEXT, **theme.ENTRY)
-        password_entry.grid(row=4, column=0, padx=32, pady=(2, 0))
+        password_entry.grid(row=4, column=0, padx=32, pady=(2, 0) )
 
         identification_button = ctk.CTkButton(self.all_input, text=string, command=comm, font=theme.BOLD, fg_color=button_color,
                                               text_color=font_color, hover_color=theme.yellow_hover, corner_radius=12, width=290, height=46)
@@ -108,7 +108,7 @@ class SignUp(Identification):
                 self.username.set('')
                 self.password.set('')
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     from MainPyGym import main_window
     # On teste Log In
     LogIn(main_window, after_ID=lambda u: Label(main_window,

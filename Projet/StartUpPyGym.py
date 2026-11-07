@@ -1,6 +1,6 @@
-from tkinter import *
+from         tkinter import *
 import customtkinter as ctk
-import ThemePyGym as theme
+import ThemePyGym    as theme
 
 def start(window, log_in, sign_up):
     theme.home_screen(lambda: start(window, log_in, sign_up))
@@ -21,9 +21,8 @@ def start(window, log_in, sign_up):
         sign_up(window)
 
     log_in_button = ctk.CTkButton(StartUpFrame, text="Log in", command=call_log_in,
-                                  width=360, height=48, font=theme.BOLD, **theme.PRIMARY)
+                                  width=360, height=48, font=theme.BOLD,  **theme.PRIMARY)
     log_in_button.pack(pady=(0, 14))
-
     sign_up_button = ctk.CTkButton(StartUpFrame, text="Sign up", command=call_sign_up,
                                    width=360, height=48, font=theme.BOLD, **theme.OUTLINE)
     sign_up_button.pack()
@@ -36,14 +35,10 @@ def start(window, log_in, sign_up):
         link.bind("<Button-1>", lambda event: call_log_in())
     ctk.CTkLabel(StartUpFrame, text="ouvert : chaque jour de 10:00 -> 23:00", font=theme.SMALL, text_color=theme.muted).pack()
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     from MainPyGym import main_window
     start(main_window,
-          lambda w : Label(w, text="Logging in",
-                              bg=main_window.cget("bg"),
-                                        font=theme.TEXT).pack(),
-          lambda w : Label(w, text="Signing up",
-                              bg=main_window.cget("bg"),
-                              font=theme.TEXT).pack())
+          lambda w : Label(w, text="Logging in", bg=main_window.cget("bg"), font=theme.TEXT).pack(),
+          lambda w : Label(w, text="Signing up", bg=main_window.cget("bg"), font=theme.TEXT).pack())
 
     main_window.mainloop()
