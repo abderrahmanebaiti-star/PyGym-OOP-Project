@@ -18,7 +18,7 @@ def go_sessions(username):
 def go_subscription(username):
     Subscription(main_window, username, go_sessions)
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     try:
         start(main_window,
               lambda w: LogIn(w, go_subscription),
