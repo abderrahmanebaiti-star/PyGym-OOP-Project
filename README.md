@@ -13,7 +13,7 @@ Themes: ThemePyGym.py
 
 Available for individual testing: StartUpPyGym.py, IdentificationPyGym.py, SubscriptionPyGym.py, SessionsPyGym.py
 
-Project Report: [docs/PyGym_Rapport.pdf](docs/PyGym_Rapport.pdf)
+Project Report: [Projet/PyGym_Rapport.pdf](Projet/PyGym_Rapport.pdf)
 
 Encadré Par:
   - Hain Moustapha
