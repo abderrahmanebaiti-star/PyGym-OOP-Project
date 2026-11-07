@@ -93,7 +93,6 @@ def allowed_activities(username):
         return []
     return [name for name, required in activities.items() if offer_level[offer] >= offer_level[required]]
 
-
 def add_session(username, activity):
     if activity in allowed_activities(username):
         PyGymDB.execute('INSERT INTO Sessions(ID_member, date_time, activity) '
